@@ -1,26 +1,18 @@
-import sys
+import calculator
 
-def calculate(num1, num2, operation):
-    if operation == "add":
-        return num1 + num2
-    elif operation == "subtract":
-        return num1 - num2
-    elif operation == "multiply":
-        return num1 * num2
-    elif operation == "divide":
-        if num2 != 0:
-            return num1 / num2
-        else:
-            raise ValueError("Cannot divide by zero")
+def test_add():
+    assert calculator.calculate(2, 3, "add") == 5
 
-if __name__ == "__main__":
-    if len(sys.argv) != 4:
-        print("Usage: calculator.py <num1> <num2> <operation>")
-        sys.exit(1)
+# Add more functional tests for subtract, multiply, and divide
 
-    num1 = float(sys.argv[1])
-    num2 = float(sys.argv[2])
-    operation = sys.argv[3]
+def test_terminal_output(capsys):
+    calculator.calculate(10, 2, "multiply")
+    captured = capsys.readouterr()
+    assert captured.out == "Result: 20\n"
 
-    result = calculate(num1, num2, operation)
-    print(f"Result: {result}")
+def test_argument_passing(monkeypatch):
+    monkeypatch.setattr("sys.argv", ["calculator.py", "6", "2", "divide"])
+    assert calculator.calculate(6, 2, "divide") == 3.0
+
+# Add more tests to cover edge cases and negative scenarios
+
